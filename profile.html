@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="KO">
+<meta charset="utf-8">
+<head>
+    <title> Who am I? </title>
+
+
+
+    <style type="text/css">
+        html, body { width:100%; height:100%;  margin:0px; padding:0px; }
+        .layer{
+            position:absolute;
+            top:50%;
+            left:50%;
+            background:white;
+            transform:translate(-50%, -50%)
+        }
+        .box { width:100%; height:4000px; }
+        .nav { width:150px;
+            height:500px;
+            position:fixed;
+            left:300px;
+            top:150px;
+            background-color:white; display:none; }
+
+    </style>
+
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+
+
+            var vi = 800;  // 하단에 메뉴 표시할 스크롤 위치값 지정
+
+            $(window).scroll(function(){
+                var num = $(window).scrollTop();
+
+                if( num > vi  ){
+                    $(".nav").fadeIn();
+                }else{
+                    $(".nav").fadeOut();
+                }
+            });
+
+
+
+
+        });
+    </script>
+
+
+
+</head>
+<body>
+<div class="layer"><h1>Who am I?</h1></div>
+<div class="box">
+    <br><br><br>
+    <div class="nav"><h3>Dominic Lee<br>(Lee Geon Gyu)</h3>
+        <Br> Korean
+        <br>Deajeon Univ
+        <br> Senior
+        <br> Information Security
+        <br> Drama Lover
+        <br> Wikipedian <br>
+        <a href="index.html">Return</a>
+    </div>
+</div>
+
+
+</body>
+</html>
