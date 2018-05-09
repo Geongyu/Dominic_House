@@ -92,7 +92,7 @@ app.get('/template', function(req, res) {
  // 함수 내부는 변수값, 스크립트 명령어 둘 모두 실행 가능함
 
 app.get('/', function(req, res){
-    res.send('Hello home page');
+    res.send('Hello home');
 });
 app.get('/dynamic', function (req,res) {
     // 동적 파일을 해야하는 이유
