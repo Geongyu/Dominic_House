@@ -1,5 +1,8 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false}));
+
  // 여기까지가 익스프레스 사용
 app.locals.pretty = true;
  // jade를  통하여 생성되는 html함수를 정렬한다
@@ -14,7 +17,14 @@ app.get('/form', function (req, res) {
     res.render('form');
 });
 
+app.post('/form_receiver', function(req, res){
+    var title = req.body.title;
+    var description = req.body.description;
+    res.send(title+','+description);
+});
+
 app.get('/form_receiver', function (req, res) {
+ // res.send("Hello, GET");
     var title = req.query.title;
     var description = req.query.description;
     res.send(title+','+description);
