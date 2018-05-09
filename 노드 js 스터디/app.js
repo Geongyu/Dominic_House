@@ -10,6 +10,15 @@ app.set('view engine', 'jade');
 app.use(express.static('public'));
 // 정적 페이지를 사용함
 
+app.get('/form', function (req, res) {
+    res.render('form');
+});
+
+app.get('/form_receiver', function (req, res) {
+    var title = req.query.title;
+    var description = req.query.description;
+    res.send(title+','+description);
+});
 /*
 // 주석 처리된 해당코드는 단순한 쿼리 코드임
 app.get('/topic', function(req, res){
