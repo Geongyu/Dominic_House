@@ -9,19 +9,41 @@ app.set('view engine', 'jade'); // Jade 를 사용하기 위하여
 app.locals.pretty = true; // jade를 줄바꿈 해준다
 
 app.get('/topic/new', function(req, res){
-    res.render('new');
-})
-app.get('/topic', function (req, res) {
     fs.readdir('data', function (err, files)  // 파일 목록 불러오기 위하여
     {
         if(err) {
             console.log(err);
             res.status(500).send('Internal Server Error');
         }
-        res.render('view', {topics:files});
+    res.render('new', {topics:files});
+})
+});
+
+app.get(['/topic', '/topic/:id'], function (req, res) {
+    fs.readdir('data', function (err, files)  // 파일 목록 불러오기 위하여
+    {
+        if(err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+        var id = req.params.id;
+        if(id){
+            // id값이 있을때
+            fs.readFile('data/' + id, 'utf8', function (err, data) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+                }
+                res.render('view', {topics: files, title: id, description:data});
+            })
+        } else {
+            // id 값이 없을 때
+            res.render('view', {topics: files, title:'Welcome', description:'Hello Java Script for server.'});
+        }
     })
 });
-app.get('/topic/:id', function (req,res) {
+
+/* app.get('/topic/:id', function (req,res) {
     var id = req.params.id; // 파일 자동으로 읽기
     fs.readdir('data', function (err, files)  // 파일 목록 불러오기 위하여
     {
@@ -39,6 +61,9 @@ app.get('/topic/:id', function (req,res) {
         })
     })
 })
+
+*/
+
 app.post('/topic', function (req,res) // 포스트를 가져온다
  {
      var title = req.body.title;
@@ -48,7 +73,7 @@ app.post('/topic', function (req,res) // 포스트를 가져온다
              console.log(err);
             res.status(500).send('Internal Server Error');
          }
-         res.send('Success!');
+         res.redirect('/topic/'+title);
      });
 
 })
