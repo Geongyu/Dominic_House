@@ -7,6 +7,8 @@ var upload = multer({ storage: 'uploads/' })
     // dest를 사용하지 않고 스토리지를 사용할때에는 추가 설정이 필요하다
     // dest만세!!!!!!!!!!!!!!!!!!!!!!!
 
+
+
 var _storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/')
