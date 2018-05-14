@@ -79,23 +79,6 @@ app.listen(3000, function(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  var express = require("express");
 var app = express(); // 익스프레스 추가
 var bodyParser = require('body-parser'); // 바디파서 인클루드
@@ -139,26 +122,61 @@ app.post('/upload', upload.single('userfile'), function(req, res){
     console.log(req.file);
     res.send('Uploaded : '+ req.file.filename);
 });
-app.get('/topic/new', function(req, res){
-    fs.readdir('data', function (err, files)  // 파일 목록 불러오기 위하여
+app.get('/topic/add', function(req, res) {
+    var sql = 'SELECT id, title FROM topic';
+    connection.query(sql, function (err, topics, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+        res.render('add', {topics: topics});
+    });
+});
+
+        app.post('/topic/add', function (req, res) // 포스트를 가져온다
+        {
+            var title = req.body.title;
+            var description = req.body.description;
+            var author = req.body.author;
+            var sql = 'INSERT INTO topic (title, description, author) VALUES(?, ?, ?)';
+            connection.query(sql, [title, description, author], function (err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+
+                } else {
+                    res.redirect('/topic/'+result.insertId);
+                }
+            });
+    })
+           /* fs.writeFile('data/' + title, description, function (err) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+                }
+                res.redirect('/topic/' + title);
+        }
+        res.render('add', {topics:topics});
+    }); */
+    /* fs.readdir('data', function (err, files)  // 파일 목록 불러오기 위하여
     {
         if(err) {
             console.log(err);
             res.status(500).send('Internal Server Error');
         }
-    res.render('new', {topics:files});
-})
-});
+    res.render('add', {topics:files});
+}) */
+
 
 app.get(['/topic', '/topic/:id'], function (req, res) {
     var sql = 'SELECT id, title FROM topic';
-    conn.query(sql, function (err, topics, fields) {
+    connection.query(sql, function (err, topics, fields) {
         var id = req.params.id;
         if(id){
             var sql = 'SELECT * FROM topic WHERE id=?';
-            conn.query(sql, [id], function(err, topic, fields){
+            connection.query(sql, [id], function(err, topic, fields){
                 if(err){
-                    consle.log(err);
+                    console.log(err);
                     res.status(500).send('Internal Sever Error');
                 } else {
                     res.render('view', {topics:topics, topic:topic[0]});
@@ -215,7 +233,30 @@ app.get(['/topic', '/topic/:id'], function (req, res) {
 
 */
 
-    app.post('/topic', function (req, res) // 포스트를 가져온다
+app.get(['/topic/:id/edit'], function (req, res) {
+    var sql = 'SELECT id, title FROM topic';
+    connection.query(sql, function (err, topics, fields) {
+        var id = req.params.id;
+        if(id){
+            var sql = 'SELECT * FROM topic WHERE id=?';
+            connection.query(sql, [id], function(err, topic, fields){
+                if(err){
+                    console.log(err);
+                    res.status(500).send('Internal Sever Error');
+                } else {
+                    res.render('edit', {topics:topics, topic:topic[0]});
+                }
+            });
+        } else {
+           console.log('There is no id.');
+            res.render('view', {topics:topics});
+
+        }
+        //  res.render('view', {topics: topics});
+    });
+});
+
+  /*  app.post('/topic', function (req, res) // 포스트를 가져온다
     {
         var title = req.body.title;
         var description = req.body.description;
@@ -227,7 +268,7 @@ app.get(['/topic', '/topic/:id'], function (req, res) {
             res.redirect('/topic/' + title);
         });
 
-    })
+    }) */
     app.listen(3000, function () {
         console.log('connected, 3000 port!');
     })
