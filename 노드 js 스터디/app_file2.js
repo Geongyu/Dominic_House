@@ -76,9 +76,6 @@ app.listen(3000, function(){
 
 
 */
-
-
-
  var express = require("express");
 var app = express(); // 익스프레스 추가
 var bodyParser = require('body-parser'); // 바디파서 인클루드
@@ -256,6 +253,21 @@ app.get(['/topic/:id/edit'], function (req, res) {
     });
 });
 
+app.post(['/topic/:id/edit'], function (req, res) {
+    var title = req.body.title;
+    var description = req.body.title;
+    var author = req.body.title;
+    var id = req.params.id;
+    var sql = 'UPDATE topic SET title=?, description=?, author=? WHERE id=?';
+    connection.query(sql, [title, description, author, id], function (err, result, fields) {
+        if(err){
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.redirect('/topic/'+id);
+        }
+    });
+});
   /*  app.post('/topic', function (req, res) // 포스트를 가져온다
     {
         var title = req.body.title;

@@ -4,7 +4,7 @@ html
         meta(charset="utf-8")
     body
       h1
-        a(href='/topic') Server Side JavaScript
+        a(href='/topic') Dominic's House!
       ul
           each topic in topics
               li
@@ -15,11 +15,11 @@ html
             = topic.description
             div= 'by ' + topic.author
         else
-          h2 Welcome
-          | This is sever side Javascript Tutorial
+          h2 Welcome Dominic's House
+          | Welcome to My House! Enjoy your time!
        ul
            li
-                a(href='/topic/add') add
+                a(href='/topic/add') Add
            if topic
             li
-                a(href='/topic/'+topic.id+'/edit') edit
+                a(href='/topic/'+topic.id+'/edit') Edit
