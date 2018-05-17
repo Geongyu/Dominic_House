@@ -229,7 +229,42 @@ app.get(['/topic', '/topic/:id'], function (req, res) {
 })
 
 */
-
+app.get(['/topic/:id/edit'], function(req, res){
+      var sql = 'SELECT id,title FROM topic';
+      connection.query(sql, function(err, topics, fields){
+            var id = req.params.id;
+            if(id){
+                  var sql = 'SELECT * FROM topic WHERE id=?';
+                  connection.query(sql, [id], function(err, topic, fields){
+                        if(err){
+                              console.log(err);
+                              res.status(500).send('Internal Server Error');
+                            } else {
+                              res.render('edit', {topics:topics, topic:topic[0]});
+                            }
+                      });
+                } else {
+                  console.log('There is no id.');
+                  res.status(500).send('Internal Server Error');
+                }
+          });
+    });
+app.post(['/topic/:id/edit'], function(req, res){
+      var title = req.body.title;
+      var description = req.body.description;
+      var author = req.body.author;
+      var id = req.params.id;
+      var sql = 'UPDATE topic SET title=?, description=?, author=? WHERE id=?';
+      connection.query(sql, [title, description, author, id], function(err, result, fields){
+            if(err){
+                  console.log(err);
+                  res.status(500).send('Internal Server Error');
+                } else {
+                  res.redirect('/topic/'+id);
+                }
+          });
+    });
+/*
 app.get(['/topic/:id/edit'], function (req, res) {
     var sql = 'SELECT id, title FROM topic';
     connection.query(sql, function (err, topics, fields) {
@@ -266,6 +301,67 @@ app.post(['/topic/:id/edit'], function (req, res) {
         } else {
             res.redirect('/topic/'+id);
         }
+    });
+}); */
+// 편집기능
+app.get('/topic/:id/delete', function(req, res){
+      var sql = 'SELECT id,title FROM topic';
+      var id = req.params.id;
+      connection.query(sql, function(err, topics, fields){
+            var sql = 'SELECT * FROM topic WHERE id=?';
+            connection.query(sql, [id], function(err, topic){
+                  if(err){
+                        console.log(err);
+                        res.status(500).send('Internal Server Error');
+                      } else {
+                        if(topic.length === 0){
+                              console.log('There is no record.');
+                              res.status(500).send('Internal Server Error');
+                            } else {
+                              res.render('delete', {topics:topics, topic:topic[0]});
+                            }
+                      }
+                });
+          });
+    });
+app.post('/topic/:id/delete', function(req, res){
+      var id = req.params.id;
+      var sql = 'DELETE FROM topic WHERE id=?';
+      connection.query(sql, [id], function(err, result){
+            res.redirect('/topic/');
+          });
+    });
+
+/*
+app.get('/topic/:id/delete', function (req, res) {
+    var sql = 'SELECT id, title FROM topic';
+    var id = req.params.id;
+    connection.query(sql, function (err, topics, fields)  {
+        var sql = 'SELECT * FROM topic WHERE id=?';
+        connection.query(sql, [id], function (err, rows) {
+            if(err){
+                console.log(err);
+                res.status(500).send('Internal Server Error');
+            } else {
+                if(topic.length === 0) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.render('delete', {topics:topics, topic:topic[0]});
+                }
+              //  res.send(topic);
+            }
+        })
+       //  res.render('delete', {topics:topics});
+    });
+  //  res.render('delete', topics, topics);
+});
+//삭제 사용자의 요청을 받아
+app.post('/topic:id/delete', function (req, res) {
+    var id = req.params.id;
+    var sql = 'DELETE FROM topic WHERE id=?';
+    connection.query(sql, [id], function (err, result) {
+        res.redirect('/topic/');
     });
 });
   /*  app.post('/topic', function (req, res) // 포스트를 가져온다
