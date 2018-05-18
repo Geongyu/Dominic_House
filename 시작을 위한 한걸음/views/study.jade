@@ -5,7 +5,12 @@ html
         meta(charset="utf-8")
     body
         h1
-            a(href='/study') 내가 학습 한, 내가 학습 할..
-    div
-    ul
-        each topic in topics
+            a(href='/main/study') 내가 학습 한, 내가 학습 할..
+        div
+        ul
+            each boards in boards
+                li
+                    a(href ='/study/' + boards)= boards
+            article
+                h2= title
+                = Title
