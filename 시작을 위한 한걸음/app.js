@@ -44,13 +44,22 @@ app.get('/main/study', function (req, res) {
     })
 });
 
+app.get('/study/add', function(req, res) {
+    var sql = 'SELECT Name, Title, Content FROM board01';
+    connection.query(sql, function (err, board01, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+        res.render('add', {boards: board01});
+    });
+});
 app.post('/study/add', function (req, res) {
     var Title = req.body.Title;
     var Content = req.body.Content;
-    var Redate = req.body.Redate;
     var Name = req.body.Name;
-    var sql = 'INSERT INTO board01 (Title, Content, Redate, Name) VALUES(?, ?, ?, ?)';
-    connection.query(sql, [Title, Content, Redate, Name], function (err, result, fields) {
+    var sql = 'INSERT INTO board01 (Title, Content, Reddate, Name) VALUES(?, ?, now(), ?)';
+    connection.query(sql, [Title, Content, Name], function (err, result, fields) {
         if(err) {
             console.log(err);
             res.status(500).send('Server Error');
@@ -60,7 +69,29 @@ app.post('/study/add', function (req, res) {
     })
 })
 
-
+app.get('/develope/add', function(req, res) {
+    var sql = 'SELECT title, content FROM board02';
+    connection.query(sql, function (err, board02, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+        res.render('add', {boards: board02});
+    });
+});
+app.post('/develope/add', function (req, res) {
+    var title = req.body.title;
+    var content = req.body.content;
+    var sql = 'INSERT INTO board02 (title, content) VALUES(?, ?)';
+    connection.query(sql, [title, content], function (err, result, fields) {
+        if(err) {
+            console.log(err);
+            res.status(500).send('Server Error');
+        } else {
+            res.redirect('/main/develope'+result.InsertId);
+        }
+    })
+})
 module.exports = app;
 
 app.listen(3000, function(){
