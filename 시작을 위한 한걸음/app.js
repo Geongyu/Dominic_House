@@ -30,11 +30,11 @@ app.get('/main/profile', function (req, res) {
 app.get('/', function (req, res) {
     res.render('main');
 });
-app.get('/main/deveolpe', function (req, res) {
+app.get('/main/develope', function (req, res) {
     res.render('develope');
 });
 app.get('/main/study', function (req, res) {
-    var sql = 'SELECT No, Title, Redate FROM board01'
+    var sql = 'SELECT No, Title FROM board01'
     connection.query(sql, function (err, boards, fields) {
         if (err) {
             console.log(err);
@@ -43,6 +43,23 @@ app.get('/main/study', function (req, res) {
         res.render('study', {boards: boards});
     })
 });
+
+app.post('/study/add', function (req, res) {
+    var Title = req.body.Title;
+    var Content = req.body.Content;
+    var Redate = req.body.Redate;
+    var Name = req.body.Name;
+    var sql = 'INSERT INTO board01 (Title, Content, Redate, Name) VALUES(?, ?, ?, ?)';
+    connection.query(sql, [Title, Content, Redate, Name], function (err, result, fields) {
+        if(err) {
+            console.log(err);
+            res.status(500).send('Server Error');
+        } else {
+            res.redirect('/main/study'+result.InsertId);
+        }
+    })
+})
+
 
 module.exports = app;
 

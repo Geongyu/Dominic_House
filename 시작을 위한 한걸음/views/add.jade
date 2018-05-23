@@ -1,0 +1,23 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+    body
+        h1
+
+        ul
+            each board01 in boards
+                li
+                    a(href='/add/' + board01.No)= board01.Title
+        article
+         form(action='/main/add' method='post')
+          p
+            input(type="text" name='Title' placeholder='Title')
+          p
+            textarea(name="Content" placeholder='Content')
+          P
+            input(type='text' name='Name' placeholder='Name')
+          P
+            input(type='text' name='Reddate' placeholder='Reddate')
+          p
+            input(type="submit")
