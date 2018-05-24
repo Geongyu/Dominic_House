@@ -5,12 +5,12 @@ html
         meta(charset="utf-8")
     body
         h1
-            | 내가 학습 한, 내가 학습 할..
+            | 재확인을 위함
         div
         ul
-            each board01 in boards
+            each board02 in boards
                 li
-                    a(href ='/study/' + board01.No)= board01.Title
+                    a(href ='/develope/' + board02.no)= board02.title
             article
                 h2= title
-                = Title
+                = title

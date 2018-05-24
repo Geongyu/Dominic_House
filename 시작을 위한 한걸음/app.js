@@ -31,10 +31,17 @@ app.get('/', function (req, res) {
     res.render('main');
 });
 app.get('/main/develope', function (req, res) {
-    res.render('develope');
+    var sql = 'SELECT * FROM board02';
+    connection.query(sql, function (err, boards, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('서버 오류');
+        }
+        res.render('develope', {boards: boards});
+    })
 });
 app.get('/main/study', function (req, res) {
-    var sql = 'SELECT No, Title FROM board01'
+    var sql = 'SELECT No, Title FROM board01';
     connection.query(sql, function (err, boards, fields) {
         if (err) {
             console.log(err);
@@ -76,7 +83,7 @@ app.get('/develope/add', function(req, res) {
             console.log(err);
             res.status(500).send('Internal Server Error');
         }
-        res.render('add', {boards: board02});
+        res.render('dadd', {boards: board02});
     });
 });
 app.post('/develope/add', function (req, res) {
