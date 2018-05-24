@@ -9,8 +9,9 @@ html
         div
         ul
             each board01 in boards
-                li
-                    a(href ='/study/' + board01.No)= board01.Title
-            article
-                h2= title
-                = Title
+                tr
+                    td
+                        a(href ='/study/' + board01.No)= board01.Title
+                    article
+                       h2= title
+                         = Title

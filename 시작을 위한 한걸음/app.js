@@ -45,7 +45,7 @@ app.get('/main/study', function (req, res) {
     connection.query(sql, function (err, boards, fields) {
         if (err) {
             console.log(err);
-            res.status(500).send('Internal Server Error');
+            res.status(500).send('서버 오류!');
         }
         res.render('study', {boards: boards});
     })
@@ -56,7 +56,7 @@ app.get('/study/add', function(req, res) {
     connection.query(sql, function (err, board01, fields) {
         if (err) {
             console.log(err);
-            res.status(500).send('Internal Server Error');
+            res.status(500).send('서버 오류!');
         }
         res.render('add', {boards: board01});
     });
@@ -102,6 +102,6 @@ app.post('/develope/add', function (req, res) {
 module.exports = app;
 
 app.listen(3000, function(){
-    console.log('Connected 3000 port!');
+    console.log('3000번 포트에 연결되었습니다!');
 });
 
