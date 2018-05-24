@@ -8,15 +8,15 @@ html
         h1
             | 개발내용
         div
-        ul
-            each board02 in boards
-                table(border='1')
-                    tr
-                        th No
-                        th Title
-
-                    tr
-                        td
-                            a(href = '/develope/' + board02.no)= board02.no
-                        td
-                            a(href = '/develope/' + board02.no)= board02.title
+            table(border='1')
+                thead
+                     tr
+                         th No
+                         th Title
+                tbody
+                    each board02 in boards
+                       tr
+                             td
+                                    a(href = '/develope/' + board02.no)= board02.no
+                             td
+                                    a(href = '/develope/' + board02.no)= board02.title
