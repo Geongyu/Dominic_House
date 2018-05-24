@@ -3,6 +3,7 @@ html
     head
         title Study
         meta(charset="utf-8")
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
         style(type='text/css').
             a:link {
                 color: black;
@@ -26,7 +27,13 @@ html
             each board01 in boards
                 tr
                     td
-                        a(href ='/study/' + board01.No)= board01.Title
+                        a(onclick="\
+                        fetch('board01.Content').then(function(response){\
+                        response.text().then(function(text){\
+                        document.querySelector('article').innerHTML = text;\
+                        })\
+                        });\
+                        ")= board01.Title
                     article
                        h2= title
                          = Title

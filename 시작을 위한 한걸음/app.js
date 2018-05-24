@@ -41,7 +41,7 @@ app.get('/main/develope', function (req, res) {
     })
 });
 app.get('/main/study', function (req, res) {
-    var sql = 'SELECT No, Title FROM board01';
+    var sql = 'SELECT No, Title, Content FROM board01';
     connection.query(sql, function (err, boards, fields) {
         if (err) {
             console.log(err);
