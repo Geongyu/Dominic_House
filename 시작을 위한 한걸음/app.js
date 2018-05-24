@@ -37,9 +37,28 @@ app.get('/main/develope', function (req, res) {
             console.log(err);
             res.status(500).send('서버 오류');
         }
-        res.render('develope', {boards: boards});
+            res.render('develope', {boards: boards});
+         })
+});
+/*
+app.post('/main/study', function(req, res, next) {
+    var sql = 'SELECT * FROM board01';
+    connection.query(sql, function (err, boards, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('서버 오류');
+        }
+        var msg = " " + req.body.Content;
+
+        res.send({
+            msg2: msg
+         })
+
     })
 });
+*/
+// Ajax를 이렇게 사용하는게 아닌가 보다..
+
 app.get('/main/study', function (req, res) {
     var sql = 'SELECT No, Title, Content FROM board01';
     connection.query(sql, function (err, boards, fields) {
