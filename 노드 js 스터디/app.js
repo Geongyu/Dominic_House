@@ -1,132 +1,126 @@
+var createError = require('http-errors');
 var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false}));
+var mysql = require('mysql');
+var fs = require('fs');
+var app = express();
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '111111',
+    database: 'board'
+});
 
- // 여기까지가 익스프레스 사용
-app.locals.pretty = true;
- // jade를  통하여 생성되는 html함수를 정렬한다
-app.set('views', './views');
+connection.connect();
+
+// mysql 연동을 위한
+
+// view engine setup
 app.set('view engine', 'jade');
- // jade를 사용하기 위함, views를 기본 폴더로 지정한다
+app.set('views', './views');
+app.use(bodyParser.urlencoded({ extended: false}));
+// catch 404 and forward to error handler
 
-app.use(express.static('public'));
-// 정적 페이지를 사용함
-
-app.get('/form', function (req, res) {
-    res.render('form');
+app.get('/main', function (req, res) {
+    res.render('main');
 });
-
-app.post('/form_receiver', function(req, res){
-    var title = req.body.title;
-    var description = req.body.description;
-    res.send(title+','+description);
+app.get('/main/profile', function (req, res) {
+    res.render('profile');
 });
-
-app.get('/form_receiver', function (req, res) {
- // res.send("Hello, GET");
-    var title = req.query.title;
-    var description = req.query.description;
-    res.send(title+','+description);
+app.get('/', function (req, res) {
+    res.render('main');
+});
+app.get('/main/develope', function (req, res) {
+    var sql = 'SELECT * FROM board02';
+    connection.query(sql, function (err, boards, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('서버 오류');
+        }
+            res.render('develope', {boards: boards});
+         })
 });
 /*
-// 주석 처리된 해당코드는 단순한 쿼리 코드임
-app.get('/topic', function(req, res){
-    var topics = [
-        'Javascript is...',
-        'Nodejs is...',
-        'Express is...'
-    ];
-    var str = `
-    <a href="/topic?id=0">JavaScript</a><br>
-    <a href="/topic?id=1">Nodejs</a><br>
-    <a href="/topic?id=2">Express</a><br><br>
-    `;
-    var output = str + topics[req.query.id]
-    res.send(output);
-})
-// 이게 무슨 코드더라.. 쿼리스트링 같은데.... */
+app.post('/main/study', function(req, res, next) {
+    var sql = 'SELECT * FROM board01';
+    connection.query(sql, function (err, boards, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('서버 오류');
+        }
+        var msg = " " + req.body.Content;
 
-app.get('/topic', function (req, res) {
-    var topics = [
-        'JavaScript is....',
-        'Nodejs is....',
-        'Express is....'
-    ];
-    var output = `
-     <a href="/topic?id=0">JavaScript</a><Br>
-      <a href="/topic?id=1">Nodejs</a><Br>
-       <a href="/topic?id=2">Express</a><Br><br>
-       ${topics[req.query.id]}
-    `
-    res.send(output);
-})
+        res.send({
+            msg2: msg
+         })
 
-app.get('/param/:module_id/:topic_id', function (req, res)  {
-    res.json(req.params);
-// 너는 어디서 왔니
-})
-
-app.get('/topic/:id', function(req, res){
-    var topics = [
-        'Javascript is....',
-        'Nodejs is...',
-        'Express is...'
-    ];
-    var output = `
-  <a href="/topic?id=0">JavaScript</a><br>
-  <a href="/topic?id=1">Nodejs</a><br>
-  <a href="/topic?id=2">Express</a><br><br>
-  ${topics[req.params.id]}
-  `
-    res.send(output);
-})
-app.get('/topic/:id/:mode', function(req, res){
-    res.send(req.params.id+','+req.params.mode)
-})
-
-app.get('/template', function(req, res) {
-    res.render('temp', {time:Date(), _title:'Jade'});
-})
- // time과 _title이라는 변수를 선언함 temp라는 jade안에서 이용 되는 변수
- // 함수 내부는 변수값, 스크립트 명령어 둘 모두 실행 가능함
-
-app.get('/', function(req, res){
-    res.send('Hello home');
+    })
 });
-app.get('/dynamic', function (req,res) {
-    // 동적 파일을 해야하는 이유
-    var lis ='';
-    for(var i=0; i<5; i++){
-        lis = lis + '<li>coding</li>';
-    }
-    // 자바스크립트 API 사용
-    var time = Date();
-   // <!-- 동적 파일 실행 -->
-    var output = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    Hello, Dynamic!
-    <ul>
-    ${lis}
-    </ul> 
-    ${time}
-    <!-- 이거를 쓸수 있는 이유는 ~ 밑에 있는것을 사용했기 떄문이다 -->
-</body>
-</html>`
-    res.send(output);
+*/
+// Ajax를 이렇게 사용하는게 아닌가 보다..
+
+app.get('/main/study', function (req, res) {
+    var sql = 'SELECT No, Title, Content FROM board01';
+    connection.query(sql, function (err, boards, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('서버 오류!');
+        }
+        res.render('study', {boards: boards});
+    })
+});
+
+app.get('/study/add', function(req, res) {
+    var sql = 'SELECT Name, Title, Content FROM board01';
+    connection.query(sql, function (err, board01, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('서버 오류!');
+        }
+        res.render('add', {boards: board01});
+    });
+});
+app.post('/study/add', function (req, res) {
+    var Title = req.body.Title;
+    var Content = req.body.Content;
+    var Name = req.body.Name;
+    var sql = 'INSERT INTO board01 (Title, Content, Reddate, Name) VALUES(?, ?, now(), ?)';
+    connection.query(sql, [Title, Content, Name], function (err, result, fields) {
+        if(err) {
+            console.log(err);
+            res.status(500).send('Server Error');
+        } else {
+            res.redirect('/main/study'+result.InsertId);
+        }
+    })
 })
-app.get('/route', function(req,res){
-    res.send('Hello Router, <img src="route.png">')
+
+app.get('/develope/add', function(req, res) {
+    var sql = 'SELECT title, content FROM board02';
+    connection.query(sql, function (err, board02, fields) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+        res.render('dadd', {boards: board02});
+    });
+});
+app.post('/develope/add', function (req, res) {
+    var title = req.body.title;
+    var content = req.body.content;
+    var sql = 'INSERT INTO board02 (title, content) VALUES(?, ?)';
+    connection.query(sql, [title, content], function (err, result, fields) {
+        if(err) {
+            console.log(err);
+            res.status(500).send('Server Error');
+        } else {
+            res.redirect('/main/develope'+result.InsertId);
+        }
+    })
 })
-app.get('/login', function (req, res) {
-    res.send('<h1>Login Please</h1>');
-})
+module.exports = app;
+
 app.listen(3000, function(){
-  console.log('Connected 3000 port!');
+    console.log('3000번 포트에 연결되었습니다!');
 });
+
