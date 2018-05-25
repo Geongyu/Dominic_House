@@ -40,6 +40,22 @@ app.get('/main/develope', function (req, res) {
             res.render('develope', {boards: boards});
          })
 });
+app.get('/main/study/:No'), function(req, res){
+    var sql = 'SELECT * FROM board01';
+    connection.query(sql, function (err, boards, fields) {
+        var id = req.params.No;
+        if(id){
+            var sql = 'SELECT * FROM boards WHERE No=?';
+            connection.query(sql, [No], function (err, rows, fields) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    res.render('study', {boards:
+                }
+            })
+        }
+    })
+}
 /*
 app.post('/main/study', function(req, res, next) {
     var sql = 'SELECT * FROM board01';
