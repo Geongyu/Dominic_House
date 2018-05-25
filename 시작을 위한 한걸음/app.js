@@ -40,22 +40,29 @@ app.get('/main/develope', function (req, res) {
             res.render('develope', {boards: boards});
          })
 });
-app.get('/main/study/:No'), function(req, res){
+/*
+app.get('/study/:No'), function(req, res) {
+    console.log('여기까지옴');
     var sql = 'SELECT * FROM board01';
     connection.query(sql, function (err, boards, fields) {
-        var id = req.params.No;
-        if(id){
-            var sql = 'SELECT * FROM boards WHERE No=?';
-            connection.query(sql, [No], function (err, rows, fields) {
-                if(err) {
-                    console.log(err);
-                } else {
-                    res.render('study', {boards:
-                }
-            })
-        }
+        res.send(boards);
     })
-}
+        var No = req.params.No;
+        if (No) {
+            var sql = 'SELECT * FROM board01 WHERE No=?';
+            connection.query(sql, [No], function (err, board01, fields) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.render('study', {boards: boards, board01: board01[0]});
+                }
+            });
+        } else {
+            res.render('study', {boards: boards});
+        }
+    });
+}; */
 /*
 app.post('/main/study', function(req, res, next) {
     var sql = 'SELECT * FROM board01';
@@ -75,18 +82,27 @@ app.post('/main/study', function(req, res, next) {
 */
 // Ajax를 이렇게 사용하는게 아닌가 보다..
 
-app.get('/main/study', function (req, res) {
+app.get(['/main/study', '/study/:No'], function (req, res) {
     var sql = 'SELECT No, Title, Content FROM board01';
     connection.query(sql, function (err, boards, fields) {
-        if (err) {
-            console.log(err);
-            res.status(500).send('서버 오류!');
+        var No = req.params.No;
+        if (No) {
+            var sql = 'SELECT * FROM board01 WHERE No=?';
+            connection.query(sql, [No], function (err, board01, fields) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.render('study', {boards: boards, board01: board01[0]});
+                }
+            });
+        } else {
+            res.render('study', {boards: boards});
         }
-        res.render('study', {boards: boards});
-    })
+    });
 });
 
-app.get('/study/add', function(req, res) {
+app.get('/main/study/add', function(req, res) {
     var sql = 'SELECT Name, Title, Content FROM board01';
     connection.query(sql, function (err, board01, fields) {
         if (err) {
@@ -96,7 +112,7 @@ app.get('/study/add', function(req, res) {
         res.render('add', {boards: board01});
     });
 });
-app.post('/study/add', function (req, res) {
+app.post('/main/study/add', function (req, res) {
     var Title = req.body.Title;
     var Content = req.body.Content;
     var Name = req.body.Name;
