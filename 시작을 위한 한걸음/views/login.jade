@@ -1,0 +1,14 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+    body
+        form(action='/login', method='post')
+            div
+                label Username:
+                input(type='text', name='username')
+            div
+                label Password:
+                input(type='password', name='password')
+            div
+                input(type='submit', value='Log In')

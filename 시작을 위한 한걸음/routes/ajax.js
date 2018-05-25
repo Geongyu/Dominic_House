@@ -7,7 +7,7 @@ $.ajax({
         'mail_id' : mail_id,
         'mail_addr' : mail_addr,
         'mail_addr_input' : mail_addr_input},
-    url: '/auth/find_id',
+    url: '/main/study',
     success: function (result) {
         if (result.length === 0) {
             alert('정보가 없습니다.')

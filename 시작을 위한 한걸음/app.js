@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var fs = require('fs');
 var app = express();
+var session = require('express-session');
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -12,8 +13,21 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
-
 // mysql 연동을 위한
+
+var passport = require('passport');
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+//로그인 세션 유지
+
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+}));
+// 익스프레스 세션 암호화
 
 // view engine setup
 app.set('view engine', 'jade');
