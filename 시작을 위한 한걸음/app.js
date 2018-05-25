@@ -1,22 +1,21 @@
-var createError = require('http-errors');
 var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var fs = require('fs');
 var app = express();
 var session = require('express-session');
+
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '111111',
     database: 'board'
 });
-
 connection.connect();
 // mysql 연동을 위한
 
 var passport = require('passport');
-require('./config/passport')(passport);
+// require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 //로그인 세션 유지
@@ -34,6 +33,8 @@ app.set('view engine', 'jade');
 app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: false}));
 // catch 404 and forward to error handler
+
+
 
 app.get('/main', function (req, res) {
     res.render('main');
