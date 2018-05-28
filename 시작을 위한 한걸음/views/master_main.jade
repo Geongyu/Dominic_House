@@ -23,13 +23,6 @@ html
                 display: inline-block;
                 margin-right: 30px;
             }
-        // //리디렉션을 위한 부분
-        //
-          # Redirect HTTPS to HTTP
-          RewriteCond %{HTTP:X-Forwarded-Proto} =https
-          RewriteRule ^(.*)$ http://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-        // 해당 코드를 작성하는 위치 확인해야함
-        // Global site tag (gtag.js) - Google Analytics
         script(async='', src='https://www.googletagmanager.com/gtag/js?id=UA-118877687-1')
 
         script.
@@ -43,10 +36,11 @@ html
 
             ul
                 li
-                    a(href='./main/develope') 개발 내용 수정하기
+                    a(href='./master_main/master_dev') 개발 내용 수정하기
+
 
                 li
-                    a(href='./main/study') 학습 내용 수정하기
+                    a(href='./master_main/master_study') 학습 내용 수정하기
 
                 li
                     a(href='./logout') 관리자 모드 로그아웃

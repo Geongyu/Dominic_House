@@ -156,7 +156,27 @@ app.get('/logout', (req, res) => {
     res.redirect('/main');
 });
 
-app.get('/main/study/add', function(req, res) {
+app.get(['/master_main/master_study', '/master_main/master_study/:No'], function (req, res) {
+    var sql = 'SELECT No, Title, Content FROM board01';
+    connection.query(sql, function (err, boards, fields) {
+        var No = req.params.No;
+        if (No) {
+            var sql = 'SELECT * FROM board01 WHERE No=?';
+            connection.query(sql, [No], function (err, board01, fields) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    res.render('master_study', {boards: boards, board01: board01[0]});
+                }
+            });
+        } else {
+            res.render('master_study', {boards: boards});
+        }
+    });
+});
+
+app.get('/master_main/master_study/add', function(req, res) {
     var sql = 'SELECT Name, Title, Content FROM board01';
     connection.query(sql, function (err, board01, fields) {
         if (err) {
@@ -166,7 +186,7 @@ app.get('/main/study/add', function(req, res) {
         res.render('add', {boards: board01});
     });
 });
-app.post('/main/study/add', function (req, res) {
+app.post('/master_main/master_study/add', function (req, res) {
     var Title = req.body.Title;
     var Content = req.body.Content;
     var Name = req.body.Name;
