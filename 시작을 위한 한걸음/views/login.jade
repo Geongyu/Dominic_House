@@ -6,6 +6,7 @@ html(lang='en')
         meta(http-equiv='X-UA-Compatible', content='ie=edge')
         title Document
     body
+    div(style='text-align:center')
         form(action='/login', method='post')
             | 아이디 :
             input(type='text', name='user_id')
@@ -13,4 +14,6 @@ html(lang='en')
             |         비밀번호 :
             input(type='password', name='user_pwd')
             br
-            input(type='submit')
+            input(type='submit', value='확인')
+            input(type='button', value='홈으로', onclick="location.href='/main'")
+

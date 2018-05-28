@@ -126,9 +126,9 @@ app.post('/login', (req, res) => {
     if( findUser( body.user_id, body.user_pwd ) ) {
         // 해당유저가 존재한다면
         req.session.user_uid = findUserIndex( body.user_id, body.user_pwd ); //유니크한 값 유저 색인 값 저장
-        res.redirect('/');
+        res.render('master_main');
     } else {
-        res.send('유효하지 않습니다.');
+        res.send('<script type="text/javascript">alert("올바르지 않은 사용자 입니다 사용자의 정보를 서버로 전송합니다.");</script>');
     }
 });
 
