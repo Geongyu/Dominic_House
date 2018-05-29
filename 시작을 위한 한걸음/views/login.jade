@@ -24,10 +24,10 @@ html(lang='en')
     div(style='text-align:center')
         form(action='/login', method='post')
             | &nbsp; 아이디 : &nbsp;
-            input(type='text', name='user_id')
+            input(type='text', name='username')
             br
             |         비밀번호 : &nbsp;
-            input(type='password', name='user_pwd')
+            input(type='password', name='password')
             br
             input(type='submit', value='확인')
             input(type='button', value='홈으로', onclick="location.href='/main'")
