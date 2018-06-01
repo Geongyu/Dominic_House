@@ -30,13 +30,7 @@ html
           RewriteRule ^(.*)$ http://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
         // 해당 코드를 작성하는 위치 확인해야함
         // Global site tag (gtag.js) - Google Analytics
-        script(async='', src='https://www.googletagmanager.com/gtag/js?id=UA-118877687-1')
 
-        script.
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'UA-118877687-1');
 #fixed-menu
     h3
                     div(style='text-align:center')  Welcome to Dominic's House / 이건규의 포트폴리오
@@ -46,25 +40,13 @@ html
                     a(href='./main/profile') Who am I?
 
                 li
-                    a(href='./main/develope') Made by Me
+                    a(href='./project/main/project') Made by Me
 
                 li
-                    a(href='./main/study') Study for Me
+                    a(href='./study/main/study') Study for Me
 
                 li
                     a(href='mailto:rjsrb365@edu.dju.ac.kr') Contact
                 li
-                    a(href='./login') 관리자 모드로 로그인
+                    a(href='./auth/login') 관리자 모드로 로그인
         iframe(width='560', height='315', src='https://www.youtube.com/embed/bWUSnLgDBEY', frameborder='0', allow='autoplay; encrypted-media', allowfullscreen='')
-        // Start of Tawk.to Script
-        script(type='text/javascript').
-            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-            (function(){
-                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                s1.async=true;
-                s1.src='https://embed.tawk.to/5af124345f7cdf4f0533f200/default';
-                s1.charset='UTF-8';
-                s1.setAttribute('crossorigin','*');
-                s0.parentNode.insertBefore(s1,s0);
-            })();
-        // End of Tawk.to Script
